@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    height: 800px;
+    width: 800px;
+    flex-wrap: wrap;
+}
+
+.dark {
+    background-color: black;
+}
