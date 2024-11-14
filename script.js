@@ -4,15 +4,15 @@ const btnRandomize = document.querySelector("#randomize");
 const btnDarken = document.querySelector("#darken");
 
 btnReset.addEventListener("click", () => {
-	startProgram(false);
+	startProgram(false, false);
 });
 
 btnRandomize.addEventListener("click", () => {
-	startProgram(true);
+	startProgram(true, false);
 });
 
 btnDarken.addEventListener("click", () => {
-	startProgram(false);
+	startProgram(false, true);
 });
 
 const clearBoard = function () {
@@ -21,7 +21,7 @@ const clearBoard = function () {
 	}
 };
 
-const addCell = function (isRandom) {
+const addCell = function (isRandom, isDarken) {
 	const cell = document.createElement("div");
 	cell.classList.add("cell");
 	container.appendChild(cell);
@@ -34,6 +34,14 @@ const addCell = function (isRandom) {
 			const color = `RGB(${red},${green},${blue})`;
 			cell.style.backgroundColor = color;
 		});
+	} else if (isDarken) {
+		cell.classList.add("light");
+		cell.addEventListener("mouseover", () => {
+			const style = window.getComputedStyle(cell);
+			const opacityStr = style.getPropertyValue("opacity");
+			const opacity = parseFloat(opacityStr) - 0.2;
+			cell.style.opacity = opacity.toString();
+		});
 	} else {
 		cell.classList.add("light");
 		cell.addEventListener("mouseover", () => {
@@ -42,9 +50,9 @@ const addCell = function (isRandom) {
 	}
 };
 
-const populateGrid = function (num, isRandom) {
+const populateGrid = function (num, isRandom, isDarken) {
 	for (let i = 0; i < num ** 2; i++) {
-		addCell(isRandom);
+		addCell(isRandom, isDarken);
 	}
 };
 
@@ -60,14 +68,14 @@ const createBoxSize = function (num) {
 	}
 };
 
-const startProgram = function (isRandom) {
+const startProgram = function (isRandom, isDarken) {
 	clearBoard();
 
 	let numStr = prompt("How many squares? (1-100)");
 	let num = parseInt(numStr) || 0;
 
 	if (num > 0 && num <= 100) {
-		populateGrid(num, isRandom);
+		populateGrid(num, isRandom, isDarken);
 		createBoxSize(num);
 	} else {
 		alert("Please enter a valid integer between 1 and 100.");
@@ -75,4 +83,4 @@ const startProgram = function (isRandom) {
 	}
 };
 
-startProgram(false);
+startProgram(false, false);
